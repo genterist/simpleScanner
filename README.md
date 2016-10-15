@@ -23,3 +23,7 @@ Author: Tam N Nguyen
   * No number longer than 8 digits
 8. Comments
   * Start with @ and end with WS
+
+## Automaton
+![parser automaton]
+(https://github.com/genterist/simpleParser/blob/master/Parser-2.png)
