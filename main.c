@@ -2,7 +2,7 @@
  ============================================================================
  Name        : main.c
  Author      : NGUYEN, TAM N
- Created on  : 09SEP16
+ Created on  : 15OCT16
  Version     : 1
  Copyright   : (CC)
  Summary	 : all functions related to a successfully built BSTree
@@ -39,8 +39,11 @@ int main(int argc, char *argv[])
 	else {
 		// if a data file argument is specified
 		if (argv[1]!=NULL) {
+		    
+		    //construct file name
+		    strncpy(theFileName, argv[1], sizeof(theName));
 
-			FILE* filePtr = fopen (argv[1], "r");
+			FILE* filePtr = fopen (theFileName, "r");
 
 			//if that is a bogus argument or file is not readable
 			if (filePtr == NULL){
@@ -48,22 +51,15 @@ int main(int argc, char *argv[])
 			}
 			//if file is readable
 			else {
-				strncpy(theName, argv[1], sizeof(theName));
-				int i = 0;
+				char i = "";
 				int nodes = 0;
 				int flag = 0; // value of 1 means raised flag
 
-				if (fscanf (filePtr, "%d", &i) == 0){
-					fprintf (stderr,"ERROR: Invalid value read !! \n");
-					fprintf (stderr,"       Program terminated \n");
-					flag = 1;
-				}
-
 				while (flag==0 && !feof (filePtr))
 				{
-					myBNTree= buildTree(myBNTree,(int) i, NULL);
+					myBNTree= buildTree(myBNTree,(char) i, NULL);
 					nodes++;
-					if (fscanf (filePtr, "%d", &i) == 0){
+					if (fscanf (filePtr, "%c", &i) == 0){
 						fprintf (stderr,"ERROR: Invalid value read !! \n");
 						flag = 1;
 					}
@@ -71,7 +67,7 @@ int main(int argc, char *argv[])
 				}
 
 				fclose (filePtr);
-				fprintf (stderr,"\n %d integer(s) read from %s \n", nodes, argv[1]);
+				fprintf (stderr,"\n %d character(s) read from %s \n", nodes, theFileName);
 			}
 
 		}
