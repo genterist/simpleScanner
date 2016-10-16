@@ -17,5 +17,15 @@ typedef struct Scanner *myScanner;
 
 #include <stdio.h>
 
+/* Initialize a scanner with default values
+*  most important data is the driver table
+*/
+myScanner initScanner ();
+
+
+/*Free up memory used by the scanner
+*/
+void clearScanner(myScanner);
+
 
 #endif

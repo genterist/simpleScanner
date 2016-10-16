@@ -1,11 +1,14 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+/scanner.c \
 /main.c 
 
 OBJS += \
+./scanner.o \
 ./main.o 
 
 C_DEPS += \
+./scanner.d \
 ./main.d 
 
 
