@@ -27,8 +27,10 @@ Author: Tam N Nguyen
 ## Automaton
 ![parser automaton]
 (https://github.com/genterist/simpleParser/blob/master/Parser-2.png)
+
 ![driver table]
 (https://github.com/genterist/simpleParser/blob/master/Screen%20Shot%202016-10-16%20at%2011.24.06%20AM.png)
+
 ![mapped driver table]
 (https://github.com/genterist/simpleParser/blob/master/Screen%20Shot%202016-10-16%20at%2011.24.31%20AM.png)
 
