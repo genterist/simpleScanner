@@ -14,14 +14,14 @@
 
 typedef enum {false, true} bool;
 typedef struct Scanner *myScanner; 
+typedef struct Token *myToken;
 
 #include <stdio.h>
 
-/* Initialize a scanner with default values
-*  most important data is the driver table
-*/
-myScanner initScanner ();
+myScanner scanByName(const char *filename);
+myScanner scanByStream(FILE *fp);
 
+void printDriverTable (myScanner);
 
 /*Free up memory used by the scanner
 */

@@ -31,9 +31,8 @@ int main(int argc, char *argv[])
 	}
 	
 	myScanner scanIt;
-	scanIt = initScanner();
-
-
+	scanIt = scanByName(argv[1]);
+    printDriverTable (scanIt);
 
 	clearScanner (scanIt);
 	
