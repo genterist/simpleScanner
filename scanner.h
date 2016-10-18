@@ -12,17 +12,20 @@
 #ifndef _SCANNER_H_
 #define _SCANNER_H_
 
-typedef enum {false, true} bool;
+
 typedef struct Scanner *myScanner; 
-typedef struct Token *myToken;
+struct Scanner {
+	FILE   *fp;				        // input stream
+    int     table[100][100];        // table max value is 100 for each dimension
+};
 
 #include <stdio.h>
+#include "./token.h"
 
 myScanner scanByName(const char *filename);
 myScanner scanByStream(FILE *fp);
 
 void printDriverTable (myScanner);
-
 /*Free up memory used by the scanner
 */
 void clearScanner(myScanner);

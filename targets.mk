@@ -1,13 +1,16 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+/token.c \
 /scanner.c \
 /main.c 
 
 OBJS += \
+./token.o \
 ./scanner.o \
 ./main.o 
 
 C_DEPS += \
+./token.d \
 ./scanner.d \
 ./main.d 
 

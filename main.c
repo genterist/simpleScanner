@@ -18,7 +18,8 @@
 #include <dirent.h>
 #include <errno.h>
 
-#include "./scanner.h";
+#include "./scanner.h"
+#include "./token.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,7 +33,16 @@ int main(int argc, char *argv[])
 	
 	myScanner scanIt;
 	scanIt = scanByName(argv[1]);
-    printDriverTable (scanIt);
+	
+	myToken t;
+	t = getToken(scanIt);
+	while (hasTokenError (t) == 0) {      //if there is any error returned in token value
+	    printToken (t);
+	    t = getToken(scanIt);
+    }
+
+	
+    //printDriverTable (scanIt);
 
 	clearScanner (scanIt);
 	

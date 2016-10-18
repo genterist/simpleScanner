@@ -1,5 +1,4 @@
-@justatest
-Begin End
-Start Stop Iff
+Begin<=<End
+Start<Stop Iff
 Loop Void Var Int
-Call Return Scan Print Program
+Call Return Scan Print Progra
