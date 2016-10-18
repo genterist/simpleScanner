@@ -1,4 +1,4 @@
 Begin<=<End
 Start<Stop Iff
-Loop Void Var Int
-Call Return Scan Print Progra
+@Loop Void Var Int
+Call Return Scan Print Program

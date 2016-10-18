@@ -6,7 +6,13 @@
  Version     : 1
  Copyright   : (CC)
  Summary	 : 
- Functions	 :
+ Functions	 :  myToken initToken () 
+                void clearToken 
+                int findNextState (const int currentState,const char c, int stateTable[100][100])
+                myToken checkReservedWord(myToken t)
+                myToken getToken(myScanner s) 
+                int hasTokenError (myToken t) 
+                void printToken (myToken t) 
  ============================================================================
  */
 
@@ -17,7 +23,7 @@
 #include "./token.h"
 
 //configurations
-int bufLen = 9;
+int bufLen = 100;
 int line = 1;
 int lineFlag = 0;
 
@@ -27,6 +33,17 @@ struct Token {
     int  tokenLine;
 };
 
+
+/*****************
+ * Function:
+ *      initToken
+ * Description: 
+ *      initialize a token ADT, allocating memory needed
+ * Input:
+ *      none
+ * Output:
+ *      a token ADT
+ *****************/
 myToken initToken () {
     
     myToken    t;
@@ -36,6 +53,17 @@ myToken initToken () {
     return t;
 }
 
+
+/*****************
+ * Function:
+ *      clearToken
+ * Description: 
+ *      remove a token ADT from memory
+ * Input:
+ *      an initialized token ADT
+ * Output:
+ *      freed up memory previously occupied by the token ADT
+ *****************/
 void clearToken (myToken t)
 {
 	// de-allocate memory
@@ -44,6 +72,21 @@ void clearToken (myToken t)
 	}
 }
 
+
+/*****************
+ * Function:
+ *      findNextState
+ * Description:
+ *      This function is internal to the ADT. 
+ *      The function will translate a character to its respective ascii value
+ *      The initial state is 0 (when no character is read)
+ *      Based on the translated value, the function will find the next state
+ *      per driver table specified by the scanner
+ * Input:
+ *      current driver state, a character and a reference to a scanner's driver table
+ * Output:
+ *      an integer value (of the next state)
+ *****************/
 int findNextState (const int currentState,const char c, int stateTable[100][100]) {
     int nextState = 0;
     int currentVal = (int) c;
@@ -51,31 +94,32 @@ int findNextState (const int currentState,const char c, int stateTable[100][100]
     if ((currentVal>=65 && currentVal<=90) || (currentVal>=97 && currentVal<=122)){
         currentVal = 0; //map to col 0 in mapped automaton table
     }
-    if (currentVal>=48 && currentVal <=57){
+    else if (currentVal>=48 && currentVal <=57){
         currentVal = 1;
     }
-    if (currentVal == 32) currentVal = 2;
-    if (currentVal == 61) currentVal = 3;
-    if (currentVal == 60) currentVal = 4;
-    if (currentVal == 62) currentVal = 5;
-    if (currentVal == 33) currentVal = 6;
-    if (currentVal == 58) currentVal = 7;
-    if (currentVal == 43) currentVal = 8;
-    if (currentVal == 45) currentVal = 9;
-    if (currentVal == 42) currentVal = 10;
-    if (currentVal == 47) currentVal = 11;
-    if (currentVal == 38) currentVal = 12;
-    if (currentVal == 37) currentVal = 13;
-    if (currentVal == 46) currentVal = 14;
-    if (currentVal == 40) currentVal = 15;
-    if (currentVal == 41) currentVal = 16;
-    if (currentVal == 44) currentVal = 17;
-    if (currentVal == 123) currentVal = 18;
-    if (currentVal == 125) currentVal = 19;
-    if (currentVal == 59) currentVal = 20;
-    if (currentVal == 91) currentVal = 21;
-    if (currentVal == 93) currentVal = 22;
-    if (currentVal == 64) currentVal = 23;
+    else if (currentVal == 32) currentVal = 2;
+    else if (currentVal == 61) currentVal = 3;
+    else if (currentVal == 60) currentVal = 4;
+    else if (currentVal == 62) currentVal = 5;
+    else if (currentVal == 33) currentVal = 6;
+    else if (currentVal == 58) currentVal = 7;
+    else if (currentVal == 43) currentVal = 8;
+    else if (currentVal == 45) currentVal = 9;
+    else if (currentVal == 42) currentVal = 10;
+    else if (currentVal == 47) currentVal = 11;
+    else if (currentVal == 38) currentVal = 12;
+    else if (currentVal == 37) currentVal = 13;
+    else if (currentVal == 46) currentVal = 14;
+    else if (currentVal == 40) currentVal = 15;
+    else if (currentVal == 41) currentVal = 16;
+    else if (currentVal == 44) currentVal = 17;
+    else if (currentVal == 123) currentVal = 18;
+    else if (currentVal == 125) currentVal = 19;
+    else if (currentVal == 59) currentVal = 20;
+    else if (currentVal == 91) currentVal = 21;
+    else if (currentVal == 93) currentVal = 22;
+    else if (currentVal == 64) currentVal = 23;
+    else currentVal = 24;
     
     nextState = stateTable[currentState][currentVal];
     //printf ("Next state is : %d \n", nextState);
@@ -83,6 +127,54 @@ int findNextState (const int currentState,const char c, int stateTable[100][100]
     
 }
 
+/*****************
+ * Function:
+ *      checkReservedWord
+ * Description: 
+ *      check if a token is indeed a keyword token
+ * Input:
+ *      a token ADT
+ * Output:
+ *      a token ADT
+ *****************/
+myToken checkReservedWord(myToken t) {
+    if ((strstr(t->tokenVal,"Begin")!=NULL ||
+        strstr(t->tokenVal,"End")!=NULL ||
+        strstr(t->tokenVal,"Start")!=NULL ||
+        strstr(t->tokenVal,"Stop")!=NULL ||
+        strstr(t->tokenVal,"Iff")!=NULL ||
+        strstr(t->tokenVal,"Loop")!=NULL ||
+        strstr(t->tokenVal,"Void")!=NULL ||
+        strstr(t->tokenVal,"Var")!=NULL ||
+        strstr(t->tokenVal,"Int")!=NULL ||
+        strstr(t->tokenVal,"Call")!=NULL ||
+        strstr(t->tokenVal,"Return")!=NULL ||
+        strstr(t->tokenVal,"Scan")!=NULL ||
+        strstr(t->tokenVal,"Print")!=NULL ||
+        strstr(t->tokenVal,"Program")!=NULL) &&
+        strstr(t->tokenVal,"@")==NULL               // rule out the chance of keywords appear in a comment
+    )
+
+        t->tokenType = keywordCode;
+    
+    return t;
+}
+
+
+/*****************
+ * Function:
+ *      getToken
+ * Description: 
+ *      This function is globally available
+ *      The function will process each character received from the scanner
+ *      and try to construct a complete token by using the scanner driver.
+ *      The process stops when a specified token code is reached or an error
+ *      code is encountered.
+ * Input:
+ *      a scanner ADT
+ * Output:
+ *      a token ADT
+ *****************/
 myToken getToken(myScanner s) {
     
     int currentState = 0;
@@ -91,11 +183,13 @@ myToken getToken(myScanner s) {
     char buffer[bufLen];
     int flag = 0;
     
+    // initialize token
     myToken t;
     t = initToken ();
-    
+    // get first character from the scanner
     c = fgetc(s->fp);
     
+    // now process the received character
     while (flag==0) {
         
         if (charRead + 1 > bufLen) {
@@ -125,13 +219,13 @@ myToken getToken(myScanner s) {
             lineFlag = 0;
             ungetc(c, s->fp);                                     // step back one character
 		}
-		else if (currentState==980) {
-            fprintf (stderr,"ERROR !! \n");
+		else if (currentState>=980 && currentState <=989) {       // if an error is found
+            if (currentState==980) fprintf (stderr,"ERROR : Invalid token!! \n");
+            if (currentState==981) fprintf (stderr,"ERROR : Character is not in the allowed alphabet. \n");
             flag = 1;
 		    t->tokenType = currentState;
 		    strcpy(t->tokenVal, "[Error]");
 		    t->tokenLine = line;
-		    fprintf (stderr,"ERROR: !! \n");
 		    memset(&buffer[0], 0, sizeof(buffer));                // clearing the buffer
         }
         else {
@@ -142,10 +236,27 @@ myToken getToken(myScanner s) {
 
 	}
     
+    t = checkReservedWord(t);
     
     return t;
 }
 
+
+/*****************
+ * Function:
+ *      hasTokenError
+ * Description: 
+ *      This function is availble globally
+ *      This function double checks if there is
+ *      a problem with a particular token.
+ *      This is used to stop the while loop of main program
+ *      alling scanner and getToken function.
+ * Input:
+ *      a toke ADT
+ * Output:
+ *      0 if there is problem
+ *      1 if there is a problem
+ *****************/
 int hasTokenError (myToken t) {
     if (strcmp(t->tokenVal, "[Error]") == 0) return 1;
     if (strcmp(t->tokenVal, "") == 0) return 1;
@@ -153,6 +264,19 @@ int hasTokenError (myToken t) {
 }
 
 
+/*****************
+ * Function:
+ *      printToken
+ * Description: 
+ *      This function is globally available
+ *      It prints descriptive information about a token to the screen
+ *      which includes token type, token value and the line where
+ *      the token is found
+ * Input:
+ *      a token ADT
+ * Output:
+ *      A descriptive printout of a particular token to the screen
+ *****************/
 void printToken (myToken t) {
     char tokenName[50];
     int x = t->tokenType;
@@ -162,6 +286,7 @@ void printToken (myToken t) {
     else if (x==delimCode) strcpy(tokenName,"Delimiter");
     else if (x==intCode) strcpy(tokenName,"Integer");
     else if (x==comCode) strcpy(tokenName,"Comment");
+    else if (x==keywordCode) strcpy(tokenName,"Keyword");
     else strcpy(tokenName,"[ERROR]");
     
     printf("\{ %s , %s , %d }\n",tokenName, t->tokenVal, t->tokenLine);

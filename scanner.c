@@ -5,8 +5,14 @@
  Created on  : 15OCT16
  Version     : 1
  Copyright   : (CC)
- Summary	 : 
- Functions	 :
+ Summary	 : Implementation of scanner ADT's functions. ADT definition and
+                implementation is in scanner.h
+ Functions	 : myScanner initScanner ()
+                printDriverTable (myScanner source)
+                myScanner scanByStream(FILE *fp)
+                myScanner scanByName(const char *filename)
+                void clearScanner(myScanner s)
+                
  ============================================================================
  */
 
@@ -16,8 +22,23 @@
 
 #include "./scanner.h"
 
+//define implicit file ext here
+static const char fileExt[10] = ".fs16";
 
 
+/*****************
+ * Function:
+ *      initScanner
+ * Description: 
+ *      Allocate memory needed for the scanner ADt
+ *      Populate the driver table with default values
+ *      Please refer to README.md for details regarding
+ *      automaton and mapped driver table.
+ * Input:
+ *      none
+ * Output:
+ *      a scanner ADT with memory allocated and default values populated
+ *****************/
 myScanner initScanner () {
     
     myScanner    s;
@@ -26,14 +47,14 @@ myScanner initScanner () {
     
     //HARD CODE DRIVER TABLE HERE
     
-    //step 1 - filling table with general ERROR code "980"
+    //step 1 - filling table with ERROR code "980"
     int i,j;
     for (i = 0; i<16; i++){                             // 16 rows - 16 states
         for (j = 0; j<24; j++) {                        // 24 columns - 24 sets of values
-            s->table[i][j] = errorCode;
+            s->table[i][j] = invalidToken_errorCode;
         }
     }
-    //step 2 - filling in TOKEN codes
+    //step 2 - filling in TOKEN codes (defined in token.h file)
     for (i=2; i<24; i++) s->table[1][i] = idCode;       //991 : Identifier Token
     for (i = 0; i<16; i++){         
         for (j = 0; j<24; j++) {        
@@ -69,6 +90,7 @@ myScanner initScanner () {
             //Fill in the "Comment" token code
             s->table[15][2] = comCode;      //995 : Comment token
         }
+        s->table[i][24] = invalidCharacter_errorCode;  // fill col 24 with invalidCharacter_errorCode 
     }
     
     //step 3 - filling in STATE codes (in asscending state code order)
@@ -94,13 +116,25 @@ myScanner initScanner () {
     
 }
 
+/*****************
+ * Function:
+ *      printDriverTable
+ * Description:
+ *      This function is for troubleshooting purpose. 
+ *      It prints the currenet hardcoded driver table out to the screen.
+ *      By defailt, this function is not available publicly.
+ * Input:
+ *      A scanner ADT
+ * Output:
+ *      Printing out corresponding scanner ADT's driver table
+ *****************/
 void printDriverTable (myScanner source) {
     int i,j;
-    for (i = 0; i<16; i++){         // 16 rows - 16 states
+    for (i = 0; i<16; i++){             // 16 rows - 16 states
     printf("\n");
         for (j = 0; j<24; j++) {        // 24 columns - 24 sets of values
-            if (source->table[i][j] == errorCode){
-                printf("    .");
+            if (source->table[i][j] == invalidToken_errorCode){
+                printf("    .");        // for presentation purpose
             }
             else 
                 printf("%5i",source->table[i][j]);
@@ -111,6 +145,16 @@ void printDriverTable (myScanner source) {
 }
 
 
+/*****************
+ * Function:
+ *      scanByStream
+ * Description: 
+ *      Create a scanner pointer pointed to stdin (a file redirection stream or a keyboard stream).
+ * Input:
+ *      stdin
+ * Output:
+ *      returning a scanner ADT
+ *****************/
 myScanner scanByStream(FILE *fp)
 {
     myScanner a;
@@ -124,8 +168,20 @@ myScanner scanByStream(FILE *fp)
 	return a;
 }
 
+/*****************
+ * Function:
+ *      scanByName
+ * Description: 
+ *      Create a scanner pointer from file name.
+ *      The file name extention is implicit (default is ".fs16")
+ * Input:
+ *      a string of the file's name (read from CLI)
+ * Output:
+ *      returning a scanner ADT
+ *****************/
 myScanner scanByName(const char *filename)
 {
+	strcat (filename, fileExt);
 	FILE* filePtr = fopen (filename, "r");
 	//if that is a bogus argument or file is not readable
 	if (filePtr == NULL){
@@ -135,6 +191,16 @@ myScanner scanByName(const char *filename)
 	return scanByStream(filePtr);
 }
 
+/*****************
+ * Function:
+ *      clearScanner
+ * Description: 
+ *      free up memory used by a scanner ADT
+ * Input:   
+ *      a scanner ADT
+ * Output:
+ *      released memory previously occupied by the scanner ADT
+ *****************/
 void clearScanner(myScanner s)
 {
 	// de-allocate memory

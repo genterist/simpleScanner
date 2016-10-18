@@ -1,4 +1,4 @@
-# simpleParser
+# simpleParser using automaton driver table
 Author: Tam N Nguyen
 
 ## Lexical Definitions

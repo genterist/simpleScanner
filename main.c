@@ -5,9 +5,15 @@
  Created on  : 15OCT16
  Version     : 1
  Copyright   : (CC)
- Summary	 : all functions related to a successfully built BSTree
- Functions	 :
- Origins	 : UMSL COMPSCI 4280
+ Summary	 : a simple token scanner that use automaton driver table method
+                The program will take a file name (file extension of .fs16 is implicit)
+                as the first CLI argument or a content stream (either from keyboard or
+                file redirection)
+                The program will then scan and provide tokens as outputs
+                Each found token will be printed out on each individual line, with token
+                name, token value, and the line where the token is found
+                The program will stop when there is an error with lexical syntax, invalid
+                characters found or error with content stream.
  ============================================================================
  */
 
@@ -23,20 +29,22 @@
 
 int main(int argc, char *argv[])
 {
-	char *prog = argv[0]; //capture program name here
+    myScanner scanIt;                      // init scanner
+    
+	char *prog = argv[0];                  // capture program name here
 
 	// if user put in many arguments
 	if (argc>2) {
 		fprintf (stderr,"ERROR: Too many arguments !! \n");
 		fprintf (stderr,"       %s [data file name] \n", prog);
-	}
-	
-	myScanner scanIt;
-	scanIt = scanByName(argv[1]);
+	} else if (argv[1]!=NULL) 
+	    { scanIt = scanByName(argv[1]);}   // if file name specified, read from file
+	  else
+	    { scanIt = scanByStream(stdin);}   // if file name not specified, read from input stream
 	
 	myToken t;
 	t = getToken(scanIt);
-	while (hasTokenError (t) == 0) {      //if there is any error returned in token value
+	while (hasTokenError (t) == 0) {       // if there is any error returned in token value
 	    printToken (t);
 	    t = getToken(scanIt);
     }
