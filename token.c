@@ -23,13 +23,13 @@
 #include "./token.h"
 
 //configurations
-int bufLen = 100;
+//int bufLen = 100;
 int line = 1;
 int lineFlag = 0;
 
 struct Token {
     int tokenType;
-    char tokenVal[8];
+    char tokenVal[bufLen];
     int  tokenLine;
 };
 
@@ -49,6 +49,7 @@ myToken initToken () {
     myToken    t;
     // allocate memory for scanner
 	t = malloc(sizeof(struct Token));
+	t->tokenLine = 0;
     
     return t;
 }
@@ -226,7 +227,7 @@ myToken getToken(myScanner s) {
 		    t->tokenType = currentState;
 		    strcpy(t->tokenVal, "[Error]");
 		    t->tokenLine = line;
-		    memset(&buffer[0], 0, sizeof(buffer));                // clearing the buffer
+		    //memset(&buffer[0], 0, sizeof(buffer));                // clearing the buffer
         }
         else {
             buffer[charRead++] = c;							      // append c to buffer

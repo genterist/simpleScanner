@@ -30,6 +30,8 @@ typedef struct Token *myToken;
 #include <stdio.h>
 #include "./scanner.h"
 
+#define bufLen (100)
+
 //configuration : error codes
 #define invalidToken_errorCode (980)
 #define invalidCharacter_errorCode (981)

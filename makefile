@@ -9,22 +9,29 @@ endif
 
 CC = gcc
 OUT_PROG = scanner
+TEST_PROG = testScanner
 
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: BinarySearchTree
+all: scanner
 
 # Tool invocations
-BinarySearchTree: $(OBJS) $(USER_OBJS)
+scanner: $(OBJS) $(USER_OBJS)
 	@echo 'Building main program :' $(OUT_PROG)
 	$(CC)  -o $(OUT_PROG) $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building main program :' $(OUT_PROG)
 	@echo ' '
+	
+test: $(OBJS) $(USER_OBJS)
+	@echo 'Building test program :' $(TEST_PROG)
+	$(CC)  -o $(TEST_PROG) $(OBJS) $(USER_OBJS) $(LIBS)
+	@echo 'Finished building test program :' $(TEST_PROG)
+	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) $(OUT_PROG)
+	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) $(OUT_PROG) $(TEST_PROG)
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -1,6 +1,15 @@
 # simpleParser using automaton driver table
 Author: Tam N Nguyen
 
+## Execution
+make : compile main program
+make test : compile test program
+scanner [file name] : scan a file
+scanner : input from keyboard or file redirection stream
+
+Program will quit when EOF reached or there is an error
+When in manual keyboard input mode, CTRL-Z (EOF signal) will terminate the program
+
 ## Lexical Definitions
 - All case sensitive
 - Each scanner error should display the error message after "Scanner Error:"

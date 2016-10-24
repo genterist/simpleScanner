@@ -43,15 +43,13 @@ int main(int argc, char *argv[])
 	    { scanIt = scanByStream(stdin);}   // if file name not specified, read from input stream
 	
 	myToken t;
-	t = getToken(scanIt);
-	while (hasTokenError (t) == 0) {       // if there is any error returned in token value
+	while (hasTokenError (t = getToken(scanIt)) == 0) {       // if there is any error returned in token value
 	    printToken (t);
-	    t = getToken(scanIt);
     }
 
 	
     //printDriverTable (scanIt);
-
+    clearToken (t);
 	clearScanner (scanIt);
 	
 	return EXIT_SUCCESS;
