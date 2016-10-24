@@ -1,9 +1,10 @@
-# simpleParser using automaton driver table
+# simpleScanner using automaton driver table
 Author: Tam N Nguyen
 
 ## Execution
 make : compile main program
 make test : compile test program
+
 scanner [file name] : scan a file
 scanner : input from keyboard or file redirection stream
 
